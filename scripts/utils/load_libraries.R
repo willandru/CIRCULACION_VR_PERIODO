@@ -1,5 +1,5 @@
 
-
+# recibe un vector c("dplyr", "readxl") e installa y carga cada libreria
 
 
 install_and_load_packages <- function(packages) {

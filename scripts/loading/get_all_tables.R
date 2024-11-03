@@ -1,5 +1,5 @@
 
-
+# Escanea la hoja entera de excel buscando tablas.
 
 
 get_all_tables <- function(file_name, sheet_name) {
