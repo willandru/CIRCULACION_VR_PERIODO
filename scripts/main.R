@@ -7,60 +7,60 @@ source("scripts/cleaning/fill_down_year.R")
 source("scripts/cleaning/clean_colnames_suffixes.R")
 source("scripts/cleaning/clean_colnames_spaces.R")
 
-#Declaramos variables constantes
-PACKAGES <- c("dplyr", "readxl", "janitor")
-FILE_NAME <- "data/VIRUS RESPIRATORIO 2022 A 2024.xlsx"
-SHEET_NAME <- "POR PERIODO"
-INDICADOR <- 2 #Sleccionar el numero de la tabla que se desea utilizar.
-
-#Cargamos paquetes
+# LOADING
 install_and_load_packages(PACKAGES)
 tables <- get_all_tables(FILE_NAME, SHEET_NAME)
-display_tables(tables)
+tabla <- get_selected_table(tables, INDICADOR)
 
-
-#DATA LOADING
-tabla <- get_selected_table(tables, 2)
-
-#DATA CLEANING
-str(tabla)
+# CLEANING
+tabla <- tabla %>%
+  clean_colnames_suffixes() %>%
+  clean_colnames_spaces() %>%
+  fill_down_year("AÑO")
 colnames(tabla)
-tabla <- clean_colnames_suffixes(tabla)
-tabla <- clean_colnames_spaces(tabla)
-tabla <- fill_down_year(tabla, "AÑO")
-str(tabla)
-colnames(tabla)
-
 #PREPROCESSING
 
-tabla <- tabla %>% slice(1:32)
+# VISUALIZING
 
 
-# Transformar las columnas de virus en formato largo :: PERFECTO
-tabla_long <- tabla %>%
-  pivot_longer(
-    cols = `A(H1N1)pdm09`:`Otros_Virus`,    # Selecciona solo las columnas de virus
-    names_to = "Virus",                     # Columna nueva para el tipo de virus
-    values_to = "Casos"                     # Columna nueva para los valores de casos
-  )
-print(tabla_long)
+# Assuming `tabla` has been cleaned and prepared as per your code.
+data <- tabla %>% slice(1:32) # Select the relevant rows
 
-#DATA VISUALIZATION
+# Reshape the data to long format for stacked bars
+stacked_data <- data %>%
+  pivot_longer(cols = `A(H1N1)pdm09`:`Otros_Virus`, 
+               names_to = "Virus_Type", 
+               values_to = "Cases") %>%
+  mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-"))
 
+# Prepare line data for the line chart, ensuring YearWeek is created consistently
+line_data <- data %>%
+  mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-")) %>%
+  select(YearWeek, Percent_Positivity = `%_DE_POSITIVIDAD`) %>%
+  drop_na(Percent_Positivity) # Remove any NA values in Percent_Positivity
 
-library(ggplot2)
+# Calculate the scaling factor for dual y-axes
+scaling_factor <- max(stacked_data$Cases, na.rm = TRUE) / max(line_data$Percent_Positivity, na.rm = TRUE)
 
-# Create the stacked bar plot
-ggplot(tabla_long, aes(x = as.factor(PERIODO_EPIDEMIOLOGICO), y = Casos, fill = Virus)) +
-  geom_bar(stat = "identity", position = "stack") +
-  labs(
-    x = "Semana Epidemiológica",
-    y = "Número Total de Casos",
-    fill = "Tipo de Virus",
-    title = "Casos Acumulados por Semana Epidemiológica y Año"
-  ) +
+# Plot the figure
+ggplot() +
+  # Stacked bar chart
+  geom_bar(data = stacked_data, 
+           aes(x = YearWeek, y = Cases, fill = Virus_Type), 
+           stat = "identity") +
+  
+  # Line chart for % positivity with scaling applied
+  geom_line(data = line_data, 
+            aes(x = YearWeek, 
+                y = Percent_Positivity * scaling_factor, 
+                color = "Positivity Rate", 
+                group = 1), 
+            size = 1) +
+  
+  # Scale and labels
+  scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS", 
+                     sec.axis = sec_axis(~ . / scaling_factor, 
+                                         name = "% DE POSITIVIDAD")) +
+  labs(x = "Período Epidemiológico", fill = "Virus Type", color = "Positivity Rate") +
   theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5)  # Keep x-axis labels horizontal # Place facet labels (year) outside the plot
-  ) +
-  facet_grid(~ AÑO, scales = "free_x", space = "free_x") 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) # Rotate x-axis labels for better readability
