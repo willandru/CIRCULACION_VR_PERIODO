@@ -64,8 +64,8 @@ ggplot() +
             size = 1) +
   
   # Scale and labels with specified y-axis breaks
-  scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS", 
-                     limits = c(0, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
+  scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS",
+                     limits = c(-50, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
                      sec.axis = sec_axis(~ . / scaling_factor, 
                                          name = "% DE POSITIVIDAD", 
                                          breaks = seq(0, 70, by = 10)),
@@ -76,7 +76,7 @@ ggplot() +
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 0, margin = margin(t = -10)),
+    axis.text.x = element_text(angle = 0, margin = margin(t = -30)),
     axis.title.x = element_text(margin = margin(t = 25), size = 8, face = "bold"),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
@@ -86,7 +86,12 @@ ggplot() +
   guides(
     fill = guide_legend(order = 1, nrow = 2, byrow = TRUE),  # Arrange Virus Types in 2 rows
     color = guide_legend(order = 2, override.aes = list(linetype = 1, size = 1)) # Place Positivity Rate at the end
-  )
+  )+
+  # Agregar líneas verticales con altura ajustable usando geom_segment
+  geom_segment(aes(x = 13.5, xend = 13.5, y = -50, yend = 690), color = "black", size = 1) +
+  geom_segment(aes(x = 26.5, xend = 26.5, y = -50, yend = 690), color = "black", size = 1) +
+  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 3)
+  
 
 
 
