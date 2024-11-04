@@ -53,7 +53,8 @@ ggplot() +
   # Stacked bar chart
   geom_bar(data = stacked_data, 
            aes(x = YearWeek, y = Cases, fill = Virus_Type), 
-           stat = "identity") +
+           stat = "identity",
+           width = 0.4) +
   
   # Line chart for % positivity with scaling applied
   geom_line(data = line_data, 
@@ -83,15 +84,14 @@ ggplot() +
     panel.grid.minor.y = element_blank(),
     legend.position = "bottom"
   )+
-  guides(
-    fill = guide_legend(order = 1, nrow = 2, byrow = TRUE),  # Arrange Virus Types in 2 rows
-    color = guide_legend(order = 2, override.aes = list(linetype = 1, size = 1)) # Place Positivity Rate at the end
-  )+
   # Agregar líneas verticales con altura ajustable usando geom_segment
   geom_segment(aes(x = 13.5, xend = 13.5, y = -50, yend = 690), color = "black", size = 1) +
   geom_segment(aes(x = 26.5, xend = 26.5, y = -50, yend = 690), color = "black", size = 1) +
-  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 3)
+  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 3)+
+  guides(
+    fill = guide_legend(order = 1, nrow = 2, byrow = TRUE),  # Arrange Virus Types in 2 rows
+    color = guide_legend(order = 2, override.aes = list(linetype = 1, size = 1)) # Place Positivity Rate at the end
+  )
   
-
 
 
