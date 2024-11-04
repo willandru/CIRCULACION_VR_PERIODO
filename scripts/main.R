@@ -8,7 +8,7 @@ source("scripts/cleaning/clean_colnames_suffixes.R")
 source("scripts/cleaning/clean_colnames_spaces.R")
 
 #Declaramos variables constantes
-PACKAGES <- c("dplyr", "readxl")
+PACKAGES <- c("dplyr", "readxl", "ggplot2")
 FILE_NAME <- "data/VIRUS RESPIRATORIO 2022 A 2024.xlsx"
 SHEET_NAME <- "POR PERIODO"
 INDICADOR <- 2 #Sleccionar el numero de la tabla que se desea utilizar.
@@ -24,13 +24,12 @@ tabla <- get_selected_table(tables, INDICADOR)
 tabla <- tabla %>%
   clean_colnames_suffixes() %>%
   clean_colnames_spaces() %>%
-  fill_down_year("AÑO")
-colnames(tabla)
-
+  fill_down_year("AÑO") %>% 
+  slice(1:32)
 
 
 #PREPROCESSING
-data <- tabla %>% slice(1:32)
+data <- tabla 
 
 stacked_data <- data %>%
   pivot_longer(cols = `A(H1N1)pdm09`:`Otros_Virus`, 
@@ -69,25 +68,25 @@ ggplot() +
                      limits = c(0, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
                      sec.axis = sec_axis(~ . / scaling_factor, 
                                          name = "% DE POSITIVIDAD", 
-                                         breaks = seq(0, 70, by = 10))) +
-  labs(x = "Período Epidemiológico", fill = NULL, color = NULL) +
+                                         breaks = seq(0, 70, by = 10)),
+                     ) +
+  scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO)+
+  labs(x = "PERÍODO EPIDEMIOLÓGICO", fill = NULL, color = NULL) +
   
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 90, hjust = 1),
+    axis.text.x = element_text(angle = 0, margin = margin(t = -10)),
+    axis.title.x = element_text(margin = margin(t = 25), size = 8, face = "bold"),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
-    panel.grid.minor.y = element_blank()          # Remove minor horizontal grid lines
+    panel.grid.minor.y = element_blank(),
+    legend.position = "bottom"
+  )+
+  guides(
+    fill = guide_legend(order = 1, nrow = 2, byrow = TRUE),  # Arrange Virus Types in 2 rows
+    color = guide_legend(order = 2, override.aes = list(linetype = 1, size = 1)) # Place Positivity Rate at the end
   )
-
-
-
-
-
-
-
-
 
 
 
