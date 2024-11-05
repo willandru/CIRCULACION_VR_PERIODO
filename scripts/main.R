@@ -74,17 +74,17 @@ ggplot() +
   ) +
   scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO)+
   scale_fill_manual(values = c(
-    "A(H1N1)pdm09" = "#0F9ED5",       # Light blue for A(H1N1)pdm09
-    "A_no_subtipificado" = "#A02B93", # Purple for A no subtipificado
-    "A(H3)" = "#4EA72E",              # Green for A(H3)
-    "Influenza__B" = "#0D3A4E",       # Dark gray for Influenza B
-    "Adenovirus" = "#095F80",         # Dark teal for Adenovirus
-    "Metapneumovirus" = "#601A58",    # Dark purple for Metapneumovirus
-    "Rinovirus" = "#2F641C",          # Dark green for Rinovirus
-    "Bocavirus" = "#1F8EC0",          # Blue for Bocavirus
-    "Otros_Virus" = "#156082",        # Blue for Otros Virus
-    "Parainfluenza" = "#994010",      # Brown for Parainfluenza
-    "VSR" = "#0F4016",                # Dark green for VSR
+    "A(H1N1)pdm09" = "#8064A2",       # Light blue for A(H1N1)pdm09
+    "A_no_subtipificado" = "#4BACC6", # Purple for A no subtipificado
+    "A(H3)" = "#F79646",              # Green for A(H3)
+    "Influenza__B" = "#2C4D75",       # Dark gray for Influenza B
+    "Adenovirus" = "#4D3B62",         # Dark teal for Adenovirus
+    "Metapneumovirus" = "#2C4D75",    # Dark purple for Metapneumovirus
+    "Rinovirus" = "#B65708",          # Dark green for Rinovirus
+    "Bocavirus" = "#729ACA",          # Blue for Bocavirus
+    "Otros_Virus" = "#4F81BD",        # Blue for Otros Virus
+    "Parainfluenza" = "#772C2A",      # Brown for Parainfluenza
+    "VSR" = "#5F7530",                # Dark green for VSR
     "nueva_columna" = "black"         # Black for nueva_columna (appears as line in legend)
   ))+
   labs(x = "PERÍODO EPIDEMIOLÓGICO", fill = NULL, color = NULL) +
@@ -92,34 +92,29 @@ ggplot() +
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 0,size=6,  margin = margin(t = -215)),
-    axis.title.x = element_text(margin = margin(t = 20), size = 8, face = "bold", color = "#595959"),
-    axis.title.y = element_text(hjust = 0.8, size = 8, face = "bold", color = "#595959"),
+    axis.text.x = element_text(angle = 0,size=7,  margin = margin(t = -255, b=-5)),
+    axis.title.x = element_text(margin = margin(t = 20, b=-10), size = 8, face = "bold", color = "#595959"),
+    axis.title.y = element_text(hjust = 0.75, size = 8, face = "bold", color = "#595959"),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
     panel.grid.minor.y = element_blank(),
     legend.position = "bottom",
-    legend.key.size = unit(1.2, "lines"),            # Adjust the size of the legend items
-    legend.text = element_text(size = 8)
+    legend.key.size = unit(1.2, "lines"),
+    legend.key.height = unit(0.02, "lines"),
+    legend.text = element_text(size = 7)
   )+
   # Agregar líneas verticales con altura ajustable usando geom_segment
-  geom_segment(aes(x = 13.5, xend = 13.5, y = -45, yend = 690), color = "black", linewidth = 1.2) +
-  geom_segment(aes(x = 26.5, xend = 26.5, y = -45, yend = 690), color = "black", linewidth = 1.2) +
-  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.6, fontface = "bold") +
+  geom_segment(aes(x = 13.5, xend = 13.5, y = -25, yend = 700), color = "black", linewidth = 0.65) +
+  geom_segment(aes(x = 26.5, xend = 26.5, y = -25, yend = 700), color = "black", linewidth = 0.65) +
+  annotate("text", x = c(6, 19, 31), y = -35, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.4, fontface = "bold") +
   guides(
     fill = guide_legend(
-      nrow = 2,
+      nrow = 3,
       byrow = TRUE
-      ),
+    ),
     color = "none") + 
-  annotate("segment", x = 25.8, xend = 26.8, y = -225, yend = -225, color = "#E97132", linewidth = 1) +
-  annotate("text", x = 27.2, y = -220, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size= 2.4) 
+  annotate("segment", x = 21, xend = 22.2, y = -150, yend = -150, color = "#E97132", linewidth = 0.7) +
+  annotate("text", x = 22.5, y = -150, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size= 2) 
 
-
-
-
-
-
-  
 
 
