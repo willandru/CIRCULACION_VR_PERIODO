@@ -61,37 +61,64 @@ ggplot() +
             aes(x = YearWeek, 
                 y = Percent_Positivity * scaling_factor, 
                 color = "Positivity Rate", 
-                group = 1), 
+                group = 1),
+            color = "brown",
             size = 1) +
   
   # Scale and labels with specified y-axis breaks
   scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS",
-                     limits = c(-50, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
+                     limits = c(-500, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
                      sec.axis = sec_axis(~ . / scaling_factor, 
-                                         name = "% DE POSITIVIDAD", 
-                                         breaks = seq(0, 70, by = 10)),
+                                         breaks = seq(0, 70, by = 10))
                      ) +
   scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO)+
+  scale_fill_manual(values = c(
+    "A(H1N1)pdm09" = "#0F9ED5",       # Light blue for A(H1N1)pdm09
+    "A_no_subtipificado" = "#A02B93", # Purple for A no subtipificado
+    "A(H3)" = "#4EA72E",              # Green for A(H3)
+    "Influenza__B" = "#0D3A4E",       # Dark gray for Influenza B
+    "Adenovirus" = "#095F80",         # Dark teal for Adenovirus
+    "Metapneumovirus" = "#601A58",    # Dark purple for Metapneumovirus
+    "Rinovirus" = "#2F641C",          # Dark green for Rinovirus
+    "Bocavirus" = "#1F8EC0",          # Blue for Bocavirus
+    "Otros_Virus" = "#156082",        # Blue for Otros Virus
+    "Parainfluenza" = "#994010",      # Brown for Parainfluenza
+    "VSR" = "#0F4016",                # Dark green for VSR
+    "nueva_columna" = "black"         # Black for nueva_columna (appears as line in legend)
+  ))+
   labs(x = "PERÍODO EPIDEMIOLÓGICO", fill = NULL, color = NULL) +
   
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 0, margin = margin(t = -30)),
-    axis.title.x = element_text(margin = margin(t = 25), size = 8, face = "bold"),
+    axis.text.x = element_text(angle = 0, margin = margin(t = -220)),
+    axis.title.x = element_text(margin = margin(t = 20), size = 8, face = "bold"),
+    axis.title.y = element_text(hjust = 0.8),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
     panel.grid.minor.y = element_blank(),
-    legend.position = "bottom"
+    legend.position = "bottom",
+    legend.key.size = unit(1.2, "lines"),            # Adjust the size of the legend items
+    legend.text = element_text(size = 8)
   )+
   # Agregar líneas verticales con altura ajustable usando geom_segment
-  geom_segment(aes(x = 13.5, xend = 13.5, y = -50, yend = 690), color = "black", size = 1) +
-  geom_segment(aes(x = 26.5, xend = 26.5, y = -50, yend = 690), color = "black", size = 1) +
-  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 3)+
+  geom_segment(aes(x = 13.5, xend = 13.5, y = -50, yend = 690), color = "black", size = 1.5) +
+  geom_segment(aes(x = 26.5, xend = 26.5, y = -50, yend = 690), color = "black", size = 1.5) +
+  annotate("text", x = c(6.5, 19.5, 30), y = -55, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.6, fontface = "bold") +
   guides(
-    fill = guide_legend(order = 1, nrow = 2, byrow = TRUE),  # Arrange Virus Types in 2 rows
-    color = guide_legend(order = 2, override.aes = list(linetype = 1, size = 1)) # Place Positivity Rate at the end
-  )
+    fill = guide_legend(
+      nrow = 2,
+      byrow = TRUE
+      ),
+    color = "none") + 
+  annotate("segment", x = 25.8, xend = 26.8, y = -225, yend = -225, color = "brown", size = 1) +
+  annotate("text", x = 27.2, y = -220, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size= 2.4) 
+
+
+
+
+
+
   
 
 
