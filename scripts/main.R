@@ -62,8 +62,8 @@ ggplot() +
                 y = Percent_Positivity * scaling_factor, 
                 color = "Positivity Rate", 
                 group = 1),
-            color = "brown",
-            size = 1) +
+            color = "#E97132",
+            linewidth = 0.7) +
   
   # Scale and labels with specified y-axis breaks
   scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS",
@@ -92,9 +92,9 @@ ggplot() +
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 0,size=6,  margin = margin(t = -220)),
-    axis.title.x = element_text(margin = margin(t = 20), size = 8, face = "bold"),
-    axis.title.y = element_text(hjust = 0.8, size = 8, face = "bold"),
+    axis.text.x = element_text(angle = 0,size=6,  margin = margin(t = -215)),
+    axis.title.x = element_text(margin = margin(t = 20), size = 8, face = "bold", color = "#595959"),
+    axis.title.y = element_text(hjust = 0.8, size = 8, face = "bold", color = "#595959"),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
     panel.grid.minor.y = element_blank(),
@@ -103,16 +103,16 @@ ggplot() +
     legend.text = element_text(size = 8)
   )+
   # Agregar líneas verticales con altura ajustable usando geom_segment
-  geom_segment(aes(x = 13.5, xend = 13.5, y = -50, yend = 690), color = "black", size = 1.5) +
-  geom_segment(aes(x = 26.5, xend = 26.5, y = -50, yend = 690), color = "black", size = 1.5) +
-  annotate("text", x = c(6.5, 19.5, 30), y = -55, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.6, fontface = "bold") +
+  geom_segment(aes(x = 13.5, xend = 13.5, y = -45, yend = 690), color = "black", linewidth = 1.2) +
+  geom_segment(aes(x = 26.5, xend = 26.5, y = -45, yend = 690), color = "black", linewidth = 1.2) +
+  annotate("text", x = c(6.5, 19.5, 30), y = -50, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.6, fontface = "bold") +
   guides(
     fill = guide_legend(
       nrow = 2,
       byrow = TRUE
       ),
     color = "none") + 
-  annotate("segment", x = 25.8, xend = 26.8, y = -225, yend = -225, color = "brown", size = 1) +
+  annotate("segment", x = 25.8, xend = 26.8, y = -225, yend = -225, color = "#E97132", linewidth = 1) +
   annotate("text", x = 27.2, y = -220, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size= 2.4) 
 
 
