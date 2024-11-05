@@ -1,23 +1,14 @@
 ---
-title: "Circulación de virus respiratorios por período epidemiológico"
-author: "willandru"
-date: "`r Sys.Date()`"
 output:
   pdf_document: default
   html_document: default
+header-includes:
+  - \usepackage{titling}
+  - \pretitle{\begin{center}\fontsize{12}{18}\selectfont\bfseries}
+  - \posttitle{\end{center}}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
+```{r, include=FALSE}
 # Cargamos las funciones
 source("scripts/utils/load_libraries.R")
 source("scripts/loading/get_all_tables.R")
@@ -47,6 +38,24 @@ tabla <- tabla %>%
   fill_down_year("AÑO") %>% 
   slice(1:32)
 
+```
+
+
+
+\title{Vigilancia de virus respiratorios y tosferina semana epidemiológica 23 de 2024. \\ Bogotá D.C} 
+\maketitle
+
+## 1.	Virus respiratorios 
+
+Durante 2024, el Laboratorio de Salud Pública (LSP) continúa apoyando la vigilancia de la infección respiratoria aguda en Bogotá, mediante el procesamiento de muestras remitidas por instituciones centinela de los eventos: Enfermedad Similar a Influenza (ESI) que son pacientes ambulatorios, de pacientes hospitalizados por Infección Respiratoria Aguda Grave (IRAG) y de IRAG inusitado que se presente en cualquier institución de la ciudad. 
+
+Las muestras previamente son procesadas por RT-PCR para SARS-CoV-2 y después continúan su análisis con: panel respiratorio Allplex y reacción en cadena de la polimerasa con transcriptasa inversa (RT-PCR) para el diagnóstico de los principales agentes a los que se les atribuye el IRAG.
+
+En el análisis del comportamiento de los virus respiratorios por periodo epidemiológico desde el `r tabla$AÑO[1]` se observa que se ha mantenido la circulación de virus como Rinovirus, Adenovirus y VSR. Para los tres años entre los periodos 3 al 6 coincide con el pico respiratorio que se presenta en todos los años (Figura 1).
+
+
+```{r, include=FALSE}
+
 
 #PREPROCESSING
 data <- tabla 
@@ -72,9 +81,6 @@ scaling_factor <- 700 / 70 # Scale Cases to match a max of 700 on the left and 7
 ```
 
 
-## Including Plots
-
-You can also embed plots, for example:
 
 ```{r ,fig.height=6,fig.width=8, echo=FALSE}
 ggplot() +
@@ -147,4 +153,4 @@ ggplot() +
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
