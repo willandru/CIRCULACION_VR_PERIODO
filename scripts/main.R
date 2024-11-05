@@ -67,10 +67,11 @@ ggplot() +
   
   # Scale and labels with specified y-axis breaks
   scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS",
-                     limits = c(-500, 700), breaks = seq(0, 700, by = 100), # Only display horizontal grid at these values
+                     limits = c(-500, 700), breaks = seq(0, 700, by = 100),
                      sec.axis = sec_axis(~ . / scaling_factor, 
-                                         breaks = seq(0, 70, by = 10))
-                     ) +
+                                         breaks = seq(0, 70, by = 10), 
+                                         labels = function(x) sprintf("%.1f", x))
+  ) +
   scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO)+
   scale_fill_manual(values = c(
     "A(H1N1)pdm09" = "#0F9ED5",       # Light blue for A(H1N1)pdm09
@@ -91,9 +92,9 @@ ggplot() +
   # Customize the grid lines
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 0, margin = margin(t = -220)),
+    axis.text.x = element_text(angle = 0,size=6,  margin = margin(t = -220)),
     axis.title.x = element_text(margin = margin(t = 20), size = 8, face = "bold"),
-    axis.title.y = element_text(hjust = 0.8),
+    axis.title.y = element_text(hjust = 0.8, size = 8, face = "bold"),
     panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
     panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
     panel.grid.minor.y = element_blank(),
