@@ -36,6 +36,8 @@ stacked_data <- data %>%
                names_to = "Virus_Type", 
                values_to = "Cases") %>%
   mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-"))
+
+
 # Prepare line data for the line chart, ensuring YearWeek is created consistently
 line_data <- data %>%
   mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-")) %>%
@@ -46,9 +48,21 @@ line_data <- data %>%
 
 # VISUALIZING
 
+# AJUSTAMOS LA MAGNITUD DESEADA DE LOS EJES 'Y' DE LA GRÁFICA
+EJEY_NUM_CASOS_VALOR_MAX <- 700
+EJEY_PORC_POSI_VALOR_MAX <- 70
 # Calculate the scaling factor for dual y-axes
 scaling_factor <- 700 / 70 # Scale Cases to match a max of 700 on the left and 70% on the right
-# Plot the figure
+
+#AGREGAMOS OTRAS VARIABLES REQUERIDAS
+#Necesitamos crear los posibles tamaños (1 tamaño para este dataset pero pueden haber mas pequeños).
+#parece que se ajusta esto directamente en RMarkDown
+
+ANCHO_DE_BARRAS <- 0.4
+ANCHO_DE_LINEA <- 0.7
+
+
+
 ggplot() +
   # Stacked bar chart
   geom_bar(data = stacked_data, 
