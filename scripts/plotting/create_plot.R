@@ -2,7 +2,7 @@
 # AJUSTAMOS LA MAGNITUD DESEADA DE LOS EJES 'Y' DE LA GRÁFICA
 Y_AXIS1_VALOR_MAX <- 700
 Y__AXIS2_VALOR_MAX <- 70
-scaling_factor <- EJEY_NUM_CASOS_VALOR_MAX / EJEY_PORC_POSI_VALOR_MAX
+scaling_factor <- Y_AXIS1_VALOR_MAX / Y__AXIS2_VALOR_MAX
 
 Y_AXIS1_NAME <- "NÚMERO DE CASOS POSITIVOS"
 X_AXIS_NAME <- "PERÍODO EPIDEMIOLÓGICO"
@@ -69,8 +69,7 @@ create_plot <- function(stacked_data, line_data) {
       "Bocavirus" = COLOR_Bocavirus,
       "Otros_Virus" = COLOR_Otros_Virus,
       "Parainfluenza" = COLOR_Parainfluenza,
-      "VSR" = COLOR_VSR,
-      "nueva_columna" = COLOR_nueva_columna
+      "VSR" = COLOR_VSR
     )) +
     
     labs(x = X_AXIS_NAME, fill = NULL, color = NULL) +
