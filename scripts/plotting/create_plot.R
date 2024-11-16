@@ -1,5 +1,6 @@
 
 # AJUSTAMOS LA MAGNITUD DESEADA DE LOS EJES 'Y' DE LA GRÁFICA
+#--
 Y_AXIS1_VALOR_MAX <- 700
 Y__AXIS2_VALOR_MAX <- 70
 scaling_factor <- Y_AXIS1_VALOR_MAX / Y__AXIS2_VALOR_MAX
@@ -8,11 +9,17 @@ Y_AXIS1_NAME <- "NÚMERO DE CASOS POSITIVOS"
 X_AXIS_NAME <- "PERÍODO EPIDEMIOLÓGICO"
 ANNOTATION_TEXT <- c("AÑO 2022", "AÑO 2023", "AÑO 2024")
 
+
+#--
+ANCHO_BARRAS <- 0.4
+
+ANCHO_LINEA <- 0.7
+COLOR_LINEA <- "#E97132"
+
 COLOR_AXIS_TITLES <- "#595959"
 COLOR_VERTICAL_LINES <- "black"
 
-
-ANCHO_BARRAS <- 0.4
+#--
 COLOR_AH1N1pdm09 <- "#8064A2"
 COLOR_A_no_subtipificado <- "#4BACC6"
 COLOR_AH3 <- "#F79646"
@@ -25,11 +32,7 @@ COLOR_Otros_Virus <- "#4F81BD"
 COLOR_Parainfluenza <- "#772C2A"
 COLOR_VSR <- "#5F7530"
 
-
-ANCHO_LINEA <- 0.7
-COLOR_LINEA <- "#E97132"
-
-
+#--
 create_plot <- function(stacked_data, line_data) {
   ggplot() +
     # Stacked bar chart
