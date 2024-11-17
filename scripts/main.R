@@ -22,15 +22,19 @@ install_and_load_packages(PACKAGES)
 tables <- get_all_tables(FILE_NAME, SHEET_NAME)
 tabla <- get_selected_table(tables, INDICADOR)
 
-# CLEANING
-tabla <- tabla %>%
-  clean_colnames_suffixes() %>%
-  clean_colnames_spaces()
-
+# CLEANING V 2.0
 # Clean colnames names
 library(janitor)
 tabla <- tabla %>% clean_names()
 colnames(tabla)
+#Fill year (ano)
+tabla <- tabla %>%
+  fill(ano, .direction = "down")
+# DOUBLE TO INT: Convertir todas las columnas excepto la última a enteros
+tabla <- tabla %>%
+  mutate(across(-percent_de_positividad, as.integer))
+
+str(tabla)
 
 
 
