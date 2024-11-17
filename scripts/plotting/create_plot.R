@@ -1,3 +1,5 @@
+source("scripts/plotting/prepare_stacked_data.R")
+source("scripts/plotting/prepare_line_data.R")
 
 # AJUSTAMOS LA MAGNITUD DESEADA DE LOS EJES 'Y' DE LA GRÁFICA
 #--
@@ -34,7 +36,15 @@ COLOR_bocavirus <- "#729ACA"
 COLOR_otros_virus <- "#4F81BD"
 
 #--
-create_plot <- function(stacked_data, line_data) {
+create_plot <- function(data_full, periodo_epi) {
+  subtabla <- data_full %>%
+            filter((data_full$ano == 2024 & periodo_epidemiologico <= periodo_epi) | data_full$ano != 2024)
+  
+  stacked_data <- prepare_stacked_data(subtabla)
+  line_data <- prepare_line_data(subtabla)
+  
+  
+  
   ggplot() +
     # Stacked bar chart
     geom_bar(data = stacked_data, 

@@ -6,8 +6,7 @@ source("scripts/loading/get_selected_table.R")
 source("scripts/cleaning/fill_down_year.R")
 source("scripts/cleaning/clean_colnames_suffixes.R")
 source("scripts/cleaning/clean_colnames_spaces.R")
-source("scripts/plotting/prepare_stacked_data.R")
-source("scripts/plotting/prepare_line_data.R")
+
 source("scripts/plotting/create_plot.R")
 
 #Declaramos variables constantes
@@ -54,14 +53,12 @@ tabla_2 <- bind_rows(subtabla_SIN_2024, registros_2024)
 str(tabla_2)
 
 
-
+subtabla <- data %>%
+  filter((ano == 2024 & periodo_epidemiologico <= 4) | ano != 2024)
 
 
 
 #PLOTTING
 data <- tabla_2
 
-stacked_data <- prepare_stacked_data(data)
-line_data <- prepare_line_data(data)
-
-create_plot(stacked_data, line_data)
+create_plot(data, 7)
