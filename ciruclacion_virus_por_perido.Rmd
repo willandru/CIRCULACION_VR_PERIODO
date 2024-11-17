@@ -17,6 +17,7 @@ source("scripts/loading/get_selected_table.R")
 source("scripts/cleaning/fill_down_year.R")
 source("scripts/cleaning/clean_colnames_suffixes.R")
 source("scripts/cleaning/clean_colnames_spaces.R")
+source("scripts/plotting/create_plot.R")
 
 #Declaramos variables constantes
 PACKAGES <- c("dplyr", "readxl", "ggplot2")
@@ -30,16 +31,38 @@ install_and_load_packages(PACKAGES)
 tables <- get_all_tables(FILE_NAME, SHEET_NAME)
 tabla <- get_selected_table(tables, INDICADOR)
 
-
-# CLEANING
-tabla <- tabla %>%
-  clean_colnames_suffixes() %>%
-  clean_colnames_spaces() %>%
-  fill_down_year("AÑO") %>% 
-  slice(1:32)
-
 ```
 
+
+```{r tabla}
+# CLEANING V 2.0
+# Clean colnames names
+library(janitor)
+tabla <- clean_colnames_suffixes(tabla) %>%
+        clean_names()
+#Fill year (ano)
+tabla <- tabla %>%
+  fill(ano, .direction = "down")
+# DOUBLE TO INT: Convertir todas las columnas excepto la última a enteros
+tabla <- tabla %>%
+  mutate(across(-percent_de_positividad, as.integer))
+```
+
+
+```{r data}
+#TABLAS PARA PRUEBAS
+# Filtrar registros del año 2022
+subtabla_2022 <- tabla %>%
+  filter(ano == 2022)
+# Filtrar registros del año 2022
+subtabla_SIN_2024 <- tabla %>%
+  filter(ano != 2024)
+# Crear nueva tabla sintetica
+registros_2024 <- subtabla_2022 %>%
+  mutate(ano = 2024)
+tabla_2 <- bind_rows(subtabla_SIN_2024, registros_2024)
+data <- tabla_2
+```
 
 
 \title{Vigilancia de virus respiratorios y tosferina semana epidemiológica 23 de 2024. \\ Bogotá D.C} 
@@ -51,106 +74,13 @@ Durante 2024, el Laboratorio de Salud Pública (LSP) continúa apoyando la vigil
 
 Las muestras previamente son procesadas por RT-PCR para SARS-CoV-2 y después continúan su análisis con: panel respiratorio Allplex y reacción en cadena de la polimerasa con transcriptasa inversa (RT-PCR) para el diagnóstico de los principales agentes a los que se les atribuye el IRAG.
 
-En el análisis del comportamiento de los virus respiratorios por periodo epidemiológico desde el `r tabla$AÑO[1]` se observa que se ha mantenido la circulación de virus como Rinovirus, Adenovirus y VSR. Para los tres años entre los periodos 3 al 6 coincide con el pico respiratorio que se presenta en todos los años (Figura 1).
+En el análisis del comportamiento de los virus respiratorios por periodo epidemiológico desde el `r tabla$ano[1]` se observa que se ha mantenido la circulación de virus como Rinovirus, Adenovirus y VSR. Para los tres años entre los periodos 3 al 6 coincide con el pico respiratorio que se presenta en todos los años (Figura 1).
 
-
-```{r, include=FALSE}
-
-
-#PREPROCESSING
-data <- tabla 
-
-stacked_data <- data %>%
-  pivot_longer(cols = `A(H1N1)pdm09`:`Otros_Virus`, 
-               names_to = "Virus_Type", 
-               values_to = "Cases") %>%
-  mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-"))
-# Prepare line data for the line chart, ensuring YearWeek is created consistently
-line_data <- data %>%
-  mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-")) %>%
-  select(YearWeek, Percent_Positivity = `%_DE_POSITIVIDAD`) %>%
-  drop_na(Percent_Positivity) # Remove any NA values in Percent_Positivity
-
-
-
-# VISUALIZING
-
-# Calculate the scaling factor for dual y-axes
-scaling_factor <- 700 / 70 # Scale Cases to match a max of 700 on the left and 70% on the right
-
-```
 
 
 
 ```{r ,fig.height=6,fig.width=8, echo=FALSE}
-ggplot() +
-  # Stacked bar chart
-  geom_bar(data = stacked_data, 
-           aes(x = YearWeek, y = Cases, fill = Virus_Type), 
-           stat = "identity",
-           width = 0.4) +
-  
-  # Line chart for % positivity with scaling applied
-  geom_line(data = line_data, 
-            aes(x = YearWeek, 
-                y = Percent_Positivity * scaling_factor, 
-                color = "Positivity Rate", 
-                group = 1),
-            color = "#E97132",
-            linewidth = 0.7) +
-  
-  # Scale and labels with specified y-axis breaks
-  scale_y_continuous(name = "NÚMERO DE CASOS POSITIVOS",
-                     limits = c(-500, 700), breaks = seq(0, 700, by = 100),
-                     sec.axis = sec_axis(~ . / scaling_factor, 
-                                         breaks = seq(0, 70, by = 10), 
-                                         labels = function(x) sprintf("%.1f", x))
-  ) +
-  scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO)+
-  scale_fill_manual(values = c(
-    "A(H1N1)pdm09" = "#8064A2",       # Light blue for A(H1N1)pdm09
-    "A_no_subtipificado" = "#4BACC6", # Purple for A no subtipificado
-    "A(H3)" = "#F79646",              # Green for A(H3)
-    "Influenza__B" = "#2C4D75",       # Dark gray for Influenza B
-    "Adenovirus" = "#4D3B62",         # Dark teal for Adenovirus
-    "Metapneumovirus" = "#2C4D75",    # Dark purple for Metapneumovirus
-    "Rinovirus" = "#B65708",          # Dark green for Rinovirus
-    "Bocavirus" = "#729ACA",          # Blue for Bocavirus
-    "Otros_Virus" = "#4F81BD",        # Blue for Otros Virus
-    "Parainfluenza" = "#772C2A",      # Brown for Parainfluenza
-    "VSR" = "#5F7530",                # Dark green for VSR
-    "nueva_columna" = "black"         # Black for nueva_columna (appears as line in legend)
-  ))+
-  labs(x = "PERÍODO EPIDEMIOLÓGICO", fill = NULL, color = NULL) +
-  
-  # Customize the grid lines
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 0,size=7,  margin = margin(t = -255, b=-5)),
-    axis.title.x = element_text(margin = margin(t = 20, b=-10), size = 8, face = "bold", color = "#595959"),
-    axis.title.y = element_text(hjust = 0.75, size = 8, face = "bold", color = "#595959"),
-    panel.grid.major.x = element_blank(),         # Remove vertical major grid lines
-    panel.grid.minor.x = element_blank(),         # Remove vertical minor grid lines
-    panel.grid.minor.y = element_blank(),
-    legend.position = "bottom",
-    legend.key.size = unit(1.2, "lines"),
-    legend.key.height = unit(0.02, "lines"),
-    legend.text = element_text(size = 7)
-  )+
-  # Agregar líneas verticales con altura ajustable usando geom_segment
-  geom_segment(aes(x = 13.5, xend = 13.5, y = -25, yend = 700), color = "black", linewidth = 0.65) +
-  geom_segment(aes(x = 26.5, xend = 26.5, y = -25, yend = 700), color = "black", linewidth = 0.65) +
-  annotate("text", x = c(6, 19, 31), y = -35, label = c("AÑO 2022", "AÑO 2023", "AÑO 2024"), size = 2.4, fontface = "bold") +
-  guides(
-    fill = guide_legend(
-      nrow = 3,
-      byrow = TRUE
-    ),
-    color = "none") + 
-  annotate("segment", x = 21, xend = 22.2, y = -150, yend = -150, color = "#E97132", linewidth = 0.7) +
-  annotate("text", x = 22.5, y = -150, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size= 2) 
-
-
+create_plot(data, 15)
 ```
 
 

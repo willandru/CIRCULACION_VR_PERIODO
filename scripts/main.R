@@ -6,7 +6,6 @@ source("scripts/loading/get_selected_table.R")
 source("scripts/cleaning/fill_down_year.R")
 source("scripts/cleaning/clean_colnames_suffixes.R")
 source("scripts/cleaning/clean_colnames_spaces.R")
-
 source("scripts/plotting/create_plot.R")
 
 #Declaramos variables constantes
@@ -50,11 +49,7 @@ subtabla_SIN_2024 <- tabla %>%
 registros_2024 <- subtabla_2022 %>%
   mutate(ano = 2024)
 tabla_2 <- bind_rows(subtabla_SIN_2024, registros_2024)
-str(tabla_2)
-
-
-subtabla <- data %>%
-  filter((ano == 2024 & periodo_epidemiologico <= 4) | ano != 2024)
+data <- tabla_2
 
 
 
