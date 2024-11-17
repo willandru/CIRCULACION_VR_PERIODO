@@ -12,6 +12,8 @@ X_AXIS_NAME <- "PERÍODO EPIDEMIOLÓGICO"
 ANNOTATION_TEXT <- c("AÑO 2022", "AÑO 2023", "AÑO 2024")
 
 
+
+
 #--
 ANCHO_BARRAS <- 0.4
 
@@ -37,12 +39,17 @@ COLOR_otros_virus <- "#4F81BD"
 
 #--
 create_plot <- function(data_full, periodo_epi) {
+  
+  periodo_epi <- pmax(1, pmin(periodo_epi, 13))
+  
   subtabla <- data_full %>%
             filter((data_full$ano == 2024 & periodo_epidemiologico <= periodo_epi) | data_full$ano != 2024)
   
   stacked_data <- prepare_stacked_data(subtabla)
   line_data <- prepare_line_data(subtabla)
   
+  
+  ANNOTATE_X <- 0.6727*periodo_epi + 17.8273
   
   
   ggplot() +
@@ -108,7 +115,7 @@ create_plot <- function(data_full, periodo_epi) {
     geom_segment(aes(x = 26.5, xend = 26.5, y = -25, yend = 700), color = COLOR_VERTICAL_LINES, linewidth = 0.65) +
     
     # Annotations
-    annotate("text", x = c(6, 19, 31), y = -35, label = ANNOTATION_TEXT, size = 2.4, fontface = "bold") +
+    annotate("text", x = c(7, 20, 26.5 + floor(periodo_epi/2)), y = -35, label = ANNOTATION_TEXT, size = 2.4, fontface = "bold") +
     
     guides(
       fill = guide_legend(
@@ -118,6 +125,6 @@ create_plot <- function(data_full, periodo_epi) {
       color = "none"
     ) +
     
-    annotate("segment", x = 21, xend = 22.2, y = -150, yend = -150, color = "#E97132", linewidth = 0.7) +
-    annotate("text", x = 22.5, y = -150, label = "% DE POSITIVIDAD", hjust = 0, color = "black", size = 2)
+    annotate("segment", x = ANNOTATE_X, xend = ANNOTATE_X+1.2, y = -145, yend = -145, color = "#E97132", linewidth = 0.7) +
+    annotate("text", x = ANNOTATE_X + 1.6, y = -145, label = "% de positividad", hjust = 0, color = "black", size = 2.5)
 }

@@ -34,7 +34,7 @@ tabla <- get_selected_table(tables, INDICADOR)
 ```
 
 
-```{r tabla}
+```{r tabla, include=FALSE}
 # CLEANING V 2.0
 # Clean colnames names
 library(janitor)
@@ -49,7 +49,7 @@ tabla <- tabla %>%
 ```
 
 
-```{r data}
+```{r data, include=FALSE}
 #TABLAS PARA PRUEBAS
 # Filtrar registros del año 2022
 subtabla_2022 <- tabla %>%
@@ -80,7 +80,7 @@ En el análisis del comportamiento de los virus respiratorios por periodo epidem
 
 
 ```{r ,fig.height=6,fig.width=8, echo=FALSE}
-create_plot(data, 15)
+create_plot(data, 0)
 ```
 
 
