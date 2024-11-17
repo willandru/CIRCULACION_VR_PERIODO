@@ -9,11 +9,11 @@
 prepare_stacked_data <- function(data) {
   stacked_data <- data %>%
     pivot_longer(
-      cols = `A(H1N1)pdm09`:`Otros_Virus`,
+      cols = a_h1n1_pdm09:otros_virus,
       names_to = "Virus_Type",
       values_to = "Cases"
     ) %>%
-    mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-"))
+    mutate(YearWeek = paste(ano, sprintf("%02d", periodo_epidemiologico), sep = "-"))
   
   return(stacked_data)
 }

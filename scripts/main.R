@@ -22,11 +22,13 @@ install_and_load_packages(PACKAGES)
 tables <- get_all_tables(FILE_NAME, SHEET_NAME)
 tabla <- get_selected_table(tables, INDICADOR)
 
+
 # CLEANING V 2.0
 # Clean colnames names
 library(janitor)
-tabla <- tabla %>% clean_names()
-colnames(tabla)
+tabla <- clean_colnames_suffixes(tabla) %>%
+        clean_names()
+
 #Fill year (ano)
 tabla <- tabla %>%
   fill(ano, .direction = "down")
@@ -37,10 +39,27 @@ tabla <- tabla %>%
 str(tabla)
 
 
+#TABLAS PARA PRUEBAS
+
+# Filtrar registros del año 2022
+subtabla_2022 <- tabla %>%
+  filter(ano == 2022)
+# Filtrar registros del año 2022
+subtabla_SIN_2024 <- tabla %>%
+  filter(ano != 2024)
+# Crear nueva tabla sintetica
+registros_2024 <- subtabla_2022 %>%
+  mutate(ano = 2024)
+tabla_2 <- bind_rows(subtabla_SIN_2024, registros_2024)
+str(tabla_2)
+
+
+
+
 
 
 #PLOTTING
-data <- tabla 
+data <- tabla_2
 
 stacked_data <- prepare_stacked_data(data)
 line_data <- prepare_line_data(data)

@@ -5,8 +5,8 @@
 
 prepare_line_data <- function(data) {
   line_data <- data %>%
-    mutate(YearWeek = paste(AÑO, sprintf("%02d", PERIODO_EPIDEMIOLOGICO), sep = "-")) %>%
-    select(YearWeek, Percent_Positivity = `%_DE_POSITIVIDAD`) %>%
+    mutate(YearWeek = paste(ano, sprintf("%02d", periodo_epidemiologico), sep = "-")) %>%
+    select(YearWeek, Percent_Positivity = percent_de_positividad) %>%
     drop_na(Percent_Positivity) # Remove any NA values in Percent_Positivity
   
   return(line_data)

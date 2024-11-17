@@ -20,17 +20,18 @@ COLOR_AXIS_TITLES <- "#595959"
 COLOR_VERTICAL_LINES <- "black"
 
 #--
-COLOR_AH1N1pdm09 <- "#8064A2"
-COLOR_A_no_subtipificado <- "#4BACC6"
-COLOR_AH3 <- "#F79646"
-COLOR_Influenza__B <- "#2C4D75"
-COLOR_Adenovirus <- "#4D3B62"
-COLOR_Metapneumovirus <- "#2C4D75"
-COLOR_Rinovirus <- "#B65708"
-COLOR_Bocavirus <- "#729ACA"
-COLOR_Otros_Virus <- "#4F81BD"
-COLOR_Parainfluenza <- "#772C2A"
-COLOR_VSR <- "#5F7530"
+
+COLOR_a_h1n1_pdm09 <- "#8064A2"
+COLOR_a_no_subtipificado <- "#4BACC6"
+COLOR_a_h3 <- "#F79646"
+COLOR_influenza_b <- "#2C4D75"
+COLOR_parainfluenza <- "#772C2A"
+COLOR_vsr <- "#5F7530"
+COLOR_adenovirus <- "#4D3B62"
+COLOR_metapneumovirus <- "#2C4D75"
+COLOR_rinovirus <- "#B65708"
+COLOR_bocavirus <- "#729ACA"
+COLOR_otros_virus <- "#4F81BD"
 
 #--
 create_plot <- function(stacked_data, line_data) {
@@ -58,21 +59,21 @@ create_plot <- function(stacked_data, line_data) {
                                            labels = function(x) sprintf("%.1f", x))
     ) +
     
-    scale_x_discrete(labels = tabla$PERIODO_EPIDEMIOLOGICO) +
+    scale_x_discrete(labels = tabla$periodo_epidemiologico) +
     
     # Custom color scale for virus types
     scale_fill_manual(values = c(
-      "A(H1N1)pdm09" = COLOR_AH1N1pdm09,
-      "A_no_subtipificado" = COLOR_A_no_subtipificado,
-      "A(H3)" = COLOR_AH3,
-      "Influenza__B" = COLOR_Influenza__B,
-      "Adenovirus" = COLOR_Adenovirus,
-      "Metapneumovirus" = COLOR_Metapneumovirus,
-      "Rinovirus" = COLOR_Rinovirus,
-      "Bocavirus" = COLOR_Bocavirus,
-      "Otros_Virus" = COLOR_Otros_Virus,
-      "Parainfluenza" = COLOR_Parainfluenza,
-      "VSR" = COLOR_VSR
+      "a_h1n1_pdm09" = COLOR_a_h1n1_pdm09,
+      "a_no_subtipificado" = COLOR_a_no_subtipificado,
+      "a_h3" = COLOR_a_h3,
+      "influenza_b" = COLOR_influenza_b,
+      "parainfluenza" = COLOR_parainfluenza,
+      "vsr" = COLOR_vsr,
+      "adenovirus" = COLOR_adenovirus,
+      "metapneumovirus" = COLOR_metapneumovirus,
+      "rinovirus" = COLOR_rinovirus,
+      "bocavirus" = COLOR_bocavirus,
+      "otros_virus" = COLOR_otros_virus
     )) +
     
     labs(x = X_AXIS_NAME, fill = NULL, color = NULL) +
