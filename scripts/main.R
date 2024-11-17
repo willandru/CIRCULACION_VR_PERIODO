@@ -22,22 +22,17 @@ install_and_load_packages(PACKAGES)
 tables <- get_all_tables(FILE_NAME, SHEET_NAME)
 tabla <- get_selected_table(tables, INDICADOR)
 
-
-
-# Inspect column names and data
-colnames(tabla)
-summary(tabla$AÑO)
-unique(tabla$AÑO)
-
-
-
-
-
-
 # CLEANING
 tabla <- tabla %>%
   clean_colnames_suffixes() %>%
   clean_colnames_spaces()
+
+# Clean colnames names
+library(janitor)
+tabla <- tabla %>% clean_names()
+colnames(tabla)
+
+
 
 
 #PLOTTING
