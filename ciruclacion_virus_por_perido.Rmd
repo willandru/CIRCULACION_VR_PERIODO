@@ -80,7 +80,7 @@ En el análisis del comportamiento de los virus respiratorios por periodo epidem
 
 
 ```{r ,fig.height=6,fig.width=8, echo=FALSE}
-create_plot(data, 0)
+create_plot(data, 8)
 ```
 
 
