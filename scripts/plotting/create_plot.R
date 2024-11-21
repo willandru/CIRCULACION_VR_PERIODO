@@ -47,7 +47,8 @@ create_plot <- function(data_full, periodo_epi) {
   
   stacked_data <- prepare_stacked_data(subtabla)
   line_data <- prepare_line_data(subtabla)
-  
+  str(stacked_data)
+  str(line_data)
   
   ANNOTATE_X <- 0.6727*periodo_epi + 17.8273
   
