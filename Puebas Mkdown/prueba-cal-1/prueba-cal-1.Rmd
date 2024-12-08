@@ -32,19 +32,19 @@ params:
   fci_data:
     label: "Datos Fundación Cardio Infantil"
     input: file
-    value: "BASE FCI SE 23.xlsx"
+    value: ""
   other_viruses:
     label: "Datos Otros virus"
     input: file
-    value: "OTROSVIRUS_SE 23.xlsx"
+    value: ""
   tosferina:
     label: "Datos Tosferina"
     input: file
-    value: "tosferina estadistica SE23.xlsx"
+    value: ""
   historic_data:
     label: "Datos Historicos"
     input: file
-    value: "VIRUS RESPIRATORIO 2022 A 2024.xlsx"
+    value: ""
   epiweek:
     label: "Semana epidemiológica"
     input: text
@@ -81,12 +81,12 @@ print(params$fci_data)
 
 ```{=tex}
 \begin{center}
-{\color{colortitles} Alcaldesa Mayor de Bogotá\\}
-Claudia Nayibe López Hernández\\~\\
+{\color{colortitles} Alcalde Mayor de Bogotá\\}
+Carlos Fernando Galán Pachón\\~\\
 
 
 {\color{colortitles} Secretario Distrital de Salud\\}
-Alejandro Gómez López\\~\\
+Gerson Orlando Bermont Galavis\\~\\
 
 
 {\color{colortitles} Subsecretario de Salud Pública\\}
@@ -185,77 +185,5 @@ plot_historic_epi_time(stacked_data = historic_epi_times$stacked_data,
                        tabla = tabla)
 ```
 
-```{r filmarray-data}
-filmarray_data <- import_data_viral_circulation(report_data = params$fci_data,
-                                                sheet = 1,
-                                                skip = 3)
-filmarray_data_cleaned <- clean_filmarray_data(filmarray_data = filmarray_data)
-filmarray_data_cleaned <-
-  generate_age_categories(dataset = filmarray_data_cleaned)
-#report_data_week <- filter(filmarray_data_cleaned, se == "23")
-filmarray_age_groups <-
-  get_cases_filmarray(report_data = filmarray_data_cleaned,
-                      age_groups = TRUE)
-```
 
-
-```{r other-viruses-data}
-other_viruses_data <-
-  import_data_viral_circulation(report_data =
-                                  params$other_viruses,
-                                skip = 0,
-                                sheet = 1)
-other_viruses_cleaned_data  <- clean_data_other_viruses(other_viruses_data)
-other_viruses_age_groups <-
-  get_cases_other_viruses(report_data = other_viruses_cleaned_data,
-                          age_groups = TRUE)
-```
-
-```{r distribution-age-groups}
-viruses_age_groups <-
-  get_dist_fci_other_vrs(fci_data = filmarray_age_groups,
-                         vrs_data = other_viruses_age_groups)
-```
-
-
-```{r sars-data}
-sars_age_groups <- get_cases_sars(other_viruses_cleaned_data,
-                                  age_groups = TRUE)
-sars_viruses_age_groups <- get_distribution_age_vr_sars(viruses_age_groups,
-                                                        sars_age_groups)
-top_sars_age_groups <-
-  group_columns_total(disease_data = sars_viruses_age_groups,
-                      sum_cases = TRUE, col_names = "grupo_edad",
-                      wt_percentage = TRUE, col_order = "porcentaje",
-                      etiqueta = FALSE)
-```
-
-
-```{r paragraph-viruses}
-perc_vrs_age_group <-
-  get_perc_viruses_age(dataset = viruses_age_groups)
-perc_sars_age_group <-
-  get_perc_viruses_age(dataset = sars_viruses_age_groups)
-```
-
-Para esta semana, por grupo de edad, el `r perc_vrs_age_group`% de pacientes positivos para virus respiratorios diferentes al SARS-CoV-2 en `r current_year` corresponden a
-la población de menores de 5 años (figura 2) y si se incluye al
-SARS-CoV-2 los menores corresponden al `r perc_sars_age_group` % (figura 3).
-
-```{r plot-viruses-age-groups, include=TRUE, fig.height=5, fig.width=10,fig.cap="Distribución porcentual de virus respiratorios por grupo de edad, Laboratorio de Salud Pública Bogotá."}
-plot_age_group_distribution(viruses_age_groups)
-```
-
-```{r paragraph-viruses-age-groups}
-text_cons_viruses <-
-  get_cons_viruses_age_text(dataset = viruses_age_groups,
-                            text_group = ", para los niños entre 2 y 4 años 
-                            se presentan casos de ")
-```
-
-En la figura 3 se presenta el consolidado de los virus respiratorios por los diferentes grupos de edad, en los niños menores de 2 años las mayores frecuencias son de casos de `r text_cons_viruses`.
-
-```{r plot-distribution-sars, include=TRUE, fig.height=5, fig.width=10, fig.cap="Distribución porcentual de virus respiratorios y SARS-CoV-2 por grupo de edad, Laboratorio de Salud Pública Bogotá."}
-plot_age_group_distribution(sars_viruses_age_groups, var_y = "casos",
-                            include_sars = TRUE)
-```
+\includepdf[pages={1}]{back_cover.pdf}
