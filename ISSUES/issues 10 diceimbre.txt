@@ -1,0 +1,31 @@
+function almacenar en GitHub, la informacion del periodo epidemioloico del año.
+
+Recibe las tablas fiales, y las amacena por año. 
+
+Esta function, creamos el RDA de las tablas que almacenaremos en GitHub
+
+
+-------------
+
+Hacemos una prueba del peso de nuestras tablas y estimar en 10 años cunato me va aequivaler.
+
+
+1. obtener las tablas
+2. almacenamiento
+
+
+
+
+- agrupar los casoso por semana epidemiologica
+- generraría mis periodos epidemiologicos
+- hacer el join de los datos
+- una function que gneere los periodos epidemiologicos
+
+
+.-------------------
+
+Cunatas descargas por cada paquete, un reporte gráfico
+
+
+metodologia agil: trankbase, tener la mayor cantidad de cambios en main, para entregar de manera constante,
+Como me aseguro de no dañar main
